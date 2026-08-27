@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ONE — Eine Billion Euro</title>
+  <style>
+    :root { --ink:#0c1020; --paper:#f6f2ea; --gold:#e8b85d; --violet:#604bff; --muted:#657084; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    header { min-height:52vh; padding:28px clamp(24px,6vw,90px) 55px; color:white; background:radial-gradient(circle at 82% 18%,#825bff 0 9%,transparent 31%),linear-gradient(125deg,#101a37,#281d67); overflow:hidden; }
+    nav { display:flex; align-items:center; justify-content:space-between; font-size:14px; letter-spacing:.11em; text-transform:uppercase; }
+    .logo { font-weight:900; font-size:22px; letter-spacing:.03em; }
+    .tag { color:#d9d4ff; }
+    h1 { max-width:860px; margin:85px 0 15px; font-family:Georgia,serif; font-size:clamp(48px,8vw,110px); line-height:.9; letter-spacing:-.065em; }
+    .lead { max-width:550px; color:#d9dff4; line-height:1.6; font-size:17px; }
+    main { max-width:1280px; padding:55px clamp(24px,6vw,90px) 90px; margin:auto; }
+    .summary { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:18px; margin-top:-90px; position:relative; }
+    .stat { min-height:135px; border-radius:18px; padding:24px; background:#fff; box-shadow:0 18px 45px #141b3722; }
+    .stat:first-child { background:var(--gold); }
+    .label { display:block; color:var(--muted); font-size:12px; letter-spacing:.11em; text-transform:uppercase; font-weight:700; }
+    .value { display:block; margin-top:9px; font-weight:800; font-size:clamp(20px,2.3vw,32px); letter-spacing:-.04em; }
+    .sub { color:#4c5361; font-size:13px; margin-top:9px; }
+    .collection-name { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:18px; padding:18px 22px; border-radius:16px; background:#fff; border:1px solid #e9e5de; }
+    .collection-name label { display:block; margin-bottom:4px; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    .collection-name strong { font-family:Georgia,serif; font-size:22px; letter-spacing:-.03em; }
+    .collection-name input { width:min(340px,50%); border:1px solid #ded9d0; border-radius:9px; padding:11px 12px; color:var(--ink); background:#fcfbf8; font:inherit; }
+    .section-title { margin:72px 0 25px; display:flex; justify-content:space-between; align-items:end; gap:20px; }
+    h2 { font-family:Georgia,serif; font-size:42px; letter-spacing:-.045em; margin:0; }
+    .hint { color:var(--muted); margin:0; }
+    .products { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    article { border-radius:18px; background:#fff; overflow:hidden; border:1px solid #e9e5de; }
+    .visual { height:185px; position:relative; overflow:hidden; background:#dfe3e9; }
+    .visual::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,#101a373d); pointer-events:none; }
+    .visual img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+    article:hover .visual img { transform:scale(1.05); }
+    .product-copy { padding:19px; }
+    h3 { margin:0; font-size:20px; letter-spacing:-.03em; }
+    .desc { color:var(--muted); font-size:14px; line-height:1.4; min-height:40px; }
+    .naming { margin:14px 0 2px; }
+    .naming label { display:block; margin-bottom:6px; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .naming input,.naming select { width:100%; border:1px solid #ded9d0; border-radius:8px; padding:10px; background:#fcfbf8; color:var(--ink); font:inherit; }
+    .naming input:focus,.naming select:focus { outline:2px solid #9d92ff; border-color:transparent; }
+    .buy-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:15px; }
+    .price { font-size:15px; font-weight:800; }
+    button { cursor:pointer; border:0; padding:10px 14px; border-radius:9px; color:#fff; background:var(--ink); font:inherit; font-weight:700; }
+    button:hover { background:var(--violet); }
+    button:disabled { opacity:.42; cursor:not-allowed; }
+    .cart { position:fixed; right:22px; bottom:22px; border-radius:15px; padding:14px 18px; background:#101a37; color:#fff; box-shadow:0 12px 30px #101a3740; font-weight:700; }
+    .cart-panel { position:fixed; z-index:2; right:22px; bottom:82px; width:min(370px,calc(100vw - 44px)); border:1px solid #e5e1da; border-radius:18px; padding:20px; background:#fff; box-shadow:0 20px 55px #101a3730; display:none; }
+    .cart-panel.open { display:block; }
+    .cart-head,.cart-total,.cart-item { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .cart-head { margin-bottom:12px; }
+    .cart-head h3 { font-size:20px; }
+    .close { padding:4px 8px; background:transparent; color:var(--ink); font-size:20px; }
+    .cart-list { max-height:270px; overflow:auto; border-top:1px solid #eeeae3; }
+    .cart-item { padding:14px 0; border-bottom:1px solid #eeeae3; font-size:14px; }
+    .cart-item strong { display:block; }
+    .cart-item span { color:var(--muted); font-size:12px; }
+    .remove { padding:6px 9px; color:#b02943; background:#fff0f3; font-size:12px; }
+    .cart-total { padding:16px 0 0; font-weight:800; }
+    .checkout { width:100%; margin-top:16px; background:var(--violet); }
+    .receipt-note { display:none; margin:12px 0 0; color:#176b54; font-size:13px; text-align:center; }
+    .receipt-note.show { display:block; }
+    .empty { color:var(--muted); padding:25px 0; text-align:center; }
+    @media (max-width:720px) {
+      .summary,.products { grid-template-columns:1fr; }
+      .summary { margin-top:-35px; }
+      h1 { margin-top:65px; }
+      .stat { min-height:105px; }
+      .collection-name { align-items:stretch; flex-direction:column; }
+      .collection-name input { width:100%; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav><span class="logo">ONE.</span><span class="tag">Dein Vermögen · 1 Billion €</span></nav>
+  <h1>Was würdest du kaufen?</h1>
+  <p class="lead">Ein einmaliges Budget. Eine Sammlung von Dingen, die sonst unerreichbar wären. Gib deine eine Billion Euro aus — oder behalte sie.</p>
+</header>
+
+<main>
+  <section class="summary">
+    <div class="stat"><span class="label">Verfügbares Vermögen</span><strong id="balance" class="value">1.000.000.000.000 €</strong><p class="sub">Jede Entscheidung zählt.</p></div>
+    <div class="stat"><span class="label">Ausgegeben</span><strong id="spent" class="value">0 €</strong><p class="sub">Für besondere Dinge.</p></div>
+    <div class="stat"><span class="label">Gekaufte Produkte</span><strong id="count" class="value">0</strong><p class="sub">Deine persönliche Kollektion.</p></div>
+  </section>
+
+  <section class="collection-name">
+    <div><label>Deine ONE. Kollektion</label><strong id="collectionDisplay">Meine ONE. Kollektion</strong></div>
+    <input id="collectionInput" maxlength="42" placeholder="Name deiner Kollektion">
+  </section>
+
+  <div class="section-title"><h2>Die Kollektion</h2><p class="hint">Klicke auf „Kaufen“, um zu beginnen.</p></div>
+  <section class="products" id="products"></section>
+</main>
+
+<section class="cart-panel" id="cartPanel" aria-label="Einkaufswagen">
+  <div class="cart-head"><h3>Dein Einkaufswagen</h3><button class="close" id="closeCart" aria-label="Einkaufswagen schließen">×</button></div>
+  <div class="cart-list" id="cartList"><p class="empty">Dein Einkaufswagen ist leer.</p></div>
+  <div class="cart-total"><span>Gesamtsumme</span><span id="cartTotal">0 €</span></div>
+  <button class="checkout" id="checkout">Bezahlen &amp; PDF herunterladen</button>
+  <p class="receipt-note" id="receiptNote">Dein Kaufbeleg wurde heruntergeladen.</p>
+</section>
+
+<button class="cart" id="openCart">🛍 <span id="cart">0</span> im Einkaufswagen</button>
+
+<script>
+const items = [
+  ['https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=1100&q=85','Superyacht „Aurora“','125 Meter Freiheit auf dem Wasser.',350000000],
+  ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1100&q=85','Private Insel','Ein stilles Stück Ozean, ganz für dich.',780000000],
+  ['https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1100&q=85','Hypercar Atelier','Handgefertigt, schnell und einmalig.',4200000],
+  ['https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1100&q=85','Orbitaler Flug','Ein Sitz mit Blick auf unseren Planeten.',95000000],
+  ['https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1100&q=85','Historischer Palazzo','Kunst, Geschichte und ein Zuhause in Venedig.',160000000],
+  ['https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1100&q=85','Stadtquartier','Eine ganze Nachbarschaft nach deinen Vorstellungen.',2200000000],
+  ['https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1100&q=85','Eigene Mikronation','Ein souveräner Ort mit eigener Flagge, Regeln und Zukunft.',18500000000,'Mikronation'],
+  ['https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1100&q=85','Eigene Stadt','Plane eine Stadt von Grund auf - vom ersten Platz bis zur Skyline.',76000000000,'Stadt'],
+  ['https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1100&q=85','Trägerrakete','Wähle dein Vehikel für die nächste große Mission.',125000000,['Rakete',['Falcon 9','Falcon Heavy','Saturn V','SLS Block 1']]],
+  ['https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1100&q=85','Eigene Raketenfirma','Entwickle, teste und starte unter deinem eigenen Namen.',4800000000,'Raketenfirma'],
+  ['https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=85','Eigene Firma','Ein internationales Unternehmen, bereit für deine Vision.',2100000000,'Firma'],
+  ['https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1100&q=85','Grand Tourer','Leistung und Langstreckenkomfort in einem Statement.',390000],
+  ['https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1100&q=85','Elektro-Hypercar','Elektrische Beschleunigung ohne Kompromisse.',2400000],
+  ['https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1100&q=85','Luxury SUV','Ein ruhiger, kraftvoller Begleiter für jedes Terrain.',310000],
+  ['https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1100&q=85','Klassischer Supersportwagen','Ikonisches Design für eine private Garage.',1750000],
+  ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1100&q=85','Serverfarm','Eigene Hochleistungsinfrastruktur für KI, Daten und Ideen.',960000000],
+  ['https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1100&q=85','Steam Neuerscheinungen','Eine kuratierte Bibliothek der aktuellsten PC-Spiele.',25000],
+  ['https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1100&q=85','High-End Gaming-PC','Maximale Details, maximale Bildrate, kompromisslos konfiguriert.',12000],
+  ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1100&q=85','High-End Server','Dedizierte Rechenleistung in Unternehmensklasse.',185000],
+  ['https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1100&q=85','Anwesen „Solstice“','Architektur, Privatsphäre und Weite an einem Ort.',68000000]
+];
+
+let budget = 1_000_000_000_000, spent = 0, count = 0;
+let collectionName = localStorage.getItem('oneCollectionName') || 'Meine ONE. Kollektion';
+const cartItems = [];
+
+const eur = n => new Intl.NumberFormat('de-DE',{
+  style:'currency',currency:'EUR',maximumFractionDigits:0
+}).format(n);
+
+const products = document.querySelector('#products');
+const collectionInput = document.querySelector('#collectionInput');
+
+collectionInput.value = collectionName;
+document.querySelector('#collectionDisplay').textContent = collectionName;
+
+collectionInput.addEventListener('input', () => {
+  collectionName = collectionInput.value.trim() || 'Meine ONE. Kollektion';
+  document.querySelector('#collectionDisplay').textContent = collectionName;
+  localStorage.setItem('oneCollectionName', collectionName);
+});
+
+items.forEach(([image,name,desc,price,customization]) => {
+  const card = document.createElement('article');
+  const isSelection = Array.isArray(customization);
+  const customType = isSelection ? customization[0] : customization;
+
+  const naming = isSelection
+    ? `<div class="naming"><label>Wähle deine Rakete</label><select aria-label="Wähle deine Rakete">${customization[1].map(option => `<option>${option}</option>`).join('')}</select></div>`
+    : customType
+      ? `<div class="naming"><label for="name-${customType}">Name deiner ${customType}</label><input id="name-${customType}" maxlength="42" placeholder="z. B. Novara"></div>`
+      : '';
+
+  card.innerHTML = `
+    <div class="visual"><img src="${image}" alt="${name}" loading="lazy"></div>
+    <div class="product-copy">
+      <h3>${name}</h3>
+      <p class="desc">${desc}</p>
+      ${naming}
+      <div class="buy-row"><span class="price">${eur(price)}</span><button>Kaufen</button></div>
+    </div>`;
+
+  card.querySelector('button').onclick = e => {
+    const chosenName = card.querySelector('input')?.value.trim();
+    const selection = card.querySelector('select')?.value;
+
+    if (customType && !isSelection && !chosenName) {
+      card.querySelector('input').focus();
+      return;
+    }
+
+    buy(
+      selection ? `${customType}: ${selection}` :
+      chosenName ? `${customType}: ${chosenName}` : name,
+      price,
+      e.currentTarget
+    );
+  };
+
+  products.append(card);
+});
+
+function buy(name, price, button) {
+  if (budget < price) {
+    alert('Dein verbleibendes Vermögen reicht für diesen Kauf nicht aus.');
+    return;
+  }
+
+  budget -= price;
+  spent += price;
+  count++;
+
+  cartItems.push({name,price,button});
+  button.textContent = 'Hinzugefügt ✓';
+
+  setTimeout(() => {
+    button.textContent = 'Noch einmal kaufen';
+  }, 900);
+
+  refresh();
+}
+
+function remove(index) {
+  const item = cartItems.splice(index,1)[0];
+  budget += item.price;
+  spent -= item.price;
+  count--;
+
+  item.button.textContent = 'Kaufen';
+  item.button.disabled = false;
+  refresh();
+}
+
+function refresh() {
+  document.querySelector('#balance').textContent = eur(budget);
+  document.querySelector('#spent').textContent = eur(spent);
+  document.querySelector('#count').textContent = count;
+  document.querySelector('#cart').textContent = count;
+  document.querySelector('#cartTotal').textContent = eur(spent);
+
+  const list = document.querySelector('#cartList');
+
+  list.innerHTML = cartItems.length
+    ? cartItems.map((item,index) => `
+      <div class="cart-item">
+        <div><strong>${item.name}</strong><span>${eur(item.price)}</span></div>
+        <button class="remove" data-index="${index}">Entfernen</button>
+      </div>`).join('')
+    : '<p class="empty">Dein Einkaufswagen ist leer.</p>';
+
+  list.querySelectorAll('.remove').forEach(btn => {
+    btn.onclick = () => remove(Number(btn.dataset.index));
+  });
+}
+
+const panel = document.querySelector('#cartPanel');
+
+document.querySelector('#openCart').onclick = () => panel.classList.toggle('open');
+document.querySelector('#closeCart').onclick = () => panel.classList.remove('open');
+
+document.querySelector('#checkout').onclick = () => {
+  if (!cartItems.length) {
+    alert('Dein Einkaufswagen ist noch leer.');
+    return;
+  }
+
+  downloadReceipt();
+  document.querySelector('#receiptNote').classList.add('show');
+};
+
+function pdfSafe(text) {
+  return text
+    .replace(/[\\()]/g, '\\$&')
+    .replace(/[äÄ]/g, 'ae')
+    .replace(/[öÖ]/g, 'oe')
+    .replace(/[üÜ]/g, 'ue')
+    .replace(/ß/g, 'ss')
+    .replace(/[^\x20-\x7E]/g, '-');
+}
+
+function pdfMoney(value) {
+  return Math.round(value).toLocaleString('de-DE') + ' EUR';
+}
+
+function downloadReceipt() {
+  const reference = 'ONE-' + Date.now().toString().slice(-8);
+  const date = new Intl.DateTimeFormat('de-DE',{dateStyle:'long'}).format(new Date());
+
+  const messagePool = [
+    [1,'Ihre Vision verdient mehr als Standard. ONE. ist bereit, sie Wirklichkeit werden zu lassen.'],
+    [2,'Ein aussergewoehnlicher Erwerb. Eine aussergewoehnliche Zukunft.'],
+    [4,'Ihre Kollektion ist einzigartig - genau wie die Geschichte, die Sie damit schreiben.'],
+    [7,'Bei ONE. beginnt Besitz dort, wo Moeglichkeiten keine Grenzen mehr kennen.'],
+    [10,'Alles wurde fuer Sie reserviert. Willkommen bei ONE.'],
+    [12,'Ihre naechste grosse Entscheidung beginnt hier.'],
+    [14,'ONE. steht fuer Dinge, die nicht nur gekauft, sondern erlebt werden.'],
+    [16,'Wir wuenschen Ihnen viel Freude mit Ihrer neuen Auswahl und allem, was daraus entsteht.'],
+    [16,'Vielen Dank fuer Ihr Vertrauen. Ihre Auswahl wurde mit groesster Sorgfalt vorbereitet.'],
+    [18,'Es freut uns sehr, heute etwas Besonderes fuer Sie moeglich zu machen.']
+  ];
+
+  let draw = Math.random() * 100;
+  const personalMessage = messagePool.find(([weight]) => (draw -= weight) < 0)[1];
+
+  let content = '';
+
+  const fill = (r,g,b) => content += `${r} ${g} ${b} rg\n`;
+  const stroke = (r,g,b) => content += `${r} ${g} ${b} RG\n`;
+  const rect = (x,y,w,h) => content += `${x} ${y} ${w} ${h} re f\n`;
+  const rule = (x1,y1,x2,y2) => content += `${x1} ${y1} m ${x2} ${y2} l S\n`;
+  const text = (font,size,x,y,value) => content += `BT /${font} ${size} Tf ${x} ${y} Td (${pdfSafe(value)}) Tj ET\n`;
+
+  fill(.047,.063,.125); rect(0,692,595,150);
+  fill(1,1,1); text('F2',22,48,795,'ONE.');
+  fill(.79,.82,.91); text('F1',9,49,774,collectionName.toUpperCase());
+  fill(1,1,1); text('F2',22,48,729,'Kaufbeleg');
+  fill(.79,.82,.91); text('F1',9,49,710,'BESTAETIGTE BESTELLUNG');
+
+  fill(.79,.82,.91); text('F1',8,405,756,'BESTELLREFERENZ');
+  fill(1,1,1); text('F2',11,405,738,reference);
+  fill(.79,.82,.91); text('F1',8,405,719,'AUSGESTELLT AM');
+  fill(1,1,1); text('F2',11,405,702,date);
+
+  fill(.047,.063,.125); text('F2',16,48,650,'Deine Auswahl');
+  fill(.38,.43,.52);
+  text('F2',8,48,622,'PRODUKT');
+  text('F2',8,193,622,'BETRAG');
+  text('F2',8,303,622,'PRODUKT');
+  text('F2',8,448,622,'BETRAG');
+
+  stroke(.84,.85,.88); content += '.6 w\n'; rule(48,611,547,611);
+
+  cartItems.forEach((item,index) => {
+    const column = index < 10 ? 0 : 1;
+    const x = column ? 303 : 48;
+    const priceX = column ? 448 : 193;
+    const y = 582 - (index % 10) * 29;
+
+    fill(.047,.063,.125);
+    text('F2',9,x,y,item.name);
+    text('F2',8,priceX,y,pdfMoney(item.price));
+
+    stroke(.90,.90,.92);
+    content += '.4 w\n';
+    rule(x,y-18,x+244,y-18);
+  });
+
+  const summaryTop = 260;
+
+  fill(.96,.96,.98); rect(337,summaryTop-102,210,102);
+  fill(.38,.43,.52); text('F2',8,357,summaryTop-25,'GESAMTSUMME');
+  fill(.047,.063,.125); text('F2',17,357,summaryTop-50,pdfMoney(spent));
+  fill(.38,.43,.52); text('F1',9,357,summaryTop-77,'Verbleibend: ' + pdfMoney(budget));
+
+  fill(.11,.48,.34); rect(48,summaryTop-46,210,46);
+  fill(1,1,1); text('F2',9,63,summaryTop-19,'ZAHLUNG ERFOLGREICH');
+  fill(.84,.95,.90); text('F1',8,63,summaryTop-34,'Deine Kollektion wurde fuer dich reserviert.');
+
+  fill(.38,.43,.52); text('F2',8,48,140,'PERSOENLICHE NACHRICHT');
+  fill(.047,.063,.125); text('F1',9,48,123,personalMessage);
+
+  stroke(.84,.85,.88); content += '.6 w\n'; rule(48,92,547,92);
+
+  fill(.047,.063,.125); text('F2',12,48,75,'ONE.');
+  fill(.38,.43,.52);
+  text('F1',8,48,57,'Dieser Beleg bestaetigt den Erwerb der oben aufgefuehrten Objekte.');
+  text('F1',8,48,43,'Bitte bewahren Sie ihn als Nachweis Ihrer privaten ONE. Kollektion auf.');
+  text('F1',8,405,57,'Dokumentstatus: abgeschlossen');
+  text('F1',8,405,43,'ONE. — one collection');
+
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>',
+    `<< /Length ${content.length} >>\nstream\n${content}endstream`
+  ];
+
+  let pdf = '%PDF-1.4\n';
+  let offsets = [0];
+
+  objects.forEach((object,index) => {
+    offsets.push(pdf.length);
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+
+  const xref = pdf.length;
+
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  offsets.slice(1).forEach(offset => {
+    pdf += `${String(offset).padStart(10,'0')} 00000 n \n`;
+  });
+
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+
+  const url = URL.createObjectURL(new Blob([pdf], {type:'application/pdf'}));
+  const link = Object.assign(document.createElement('a'), {
+    href:url,
+    download:`ONE-Kaufbeleg-${reference}.pdf`
+  });
+
+  link.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
